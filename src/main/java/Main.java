@@ -21,10 +21,10 @@ public class Main {
 
        String line = reader.readLine();
        String path = line.split(" ")[1];
-       System.out.println(path.split("/")[1]);
+       String [] paths = path.split("/");
        if(path != null && path.equalsIgnoreCase("/"))
        writer.write("HTTP/1.1 200 OK\r\n\r\n");
-       else if(path.split("/")[1].equalsIgnoreCase("echo")) {
+       else if(paths.length > 2 && path.split("/")[1].equalsIgnoreCase("echo")) {
            String res = path.split("/")[2];
            writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+ res.length()+"\r\n\r\n" + res);
        }
