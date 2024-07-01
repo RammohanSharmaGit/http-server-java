@@ -35,7 +35,7 @@ public class Main {
            writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+ res.length()+"\r\n\r\n" + res);
        }
        else if(paths.length > 1 && path.split("/")[1].equalsIgnoreCase("user-agent")) {
-           String res = request.get(1).split("/r/n")[0].split(" ")[1];
+           String res = request.get(3).split("/r/n")[0].split(" ")[1];
            writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "+ res.length()+"\r\n\r\n" + res);
        }
        else
