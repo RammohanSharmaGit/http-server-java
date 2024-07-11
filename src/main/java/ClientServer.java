@@ -40,10 +40,10 @@ public class ClientServer implements Runnable{
             } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = path.split("/")[2];
                 String filePathStr  = "/tmp/" + filename;
-                Path filePath = Paths.get(filePathStr);
+                Path filePath = Paths.get(filename);
 
                 if(Files.exists(filePath)){
-                FileInputStream fileInputStream = new FileInputStream(filePathStr);
+                FileInputStream fileInputStream = new FileInputStream(filename);
                 reader = new BufferedReader(new InputStreamReader(fileInputStream));
                 String fileText = reader.readLine();
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + fileText.length() + "\r\n\r\n" + fileText);
