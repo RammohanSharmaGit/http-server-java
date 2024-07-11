@@ -1,9 +1,8 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +37,19 @@ public class ClientServer implements Runnable{
             } else if (paths.length > 1 && path.split("/")[1].equalsIgnoreCase("user-agent")) {
                 String res = request.get(2).split("/r/n")[0].split(" ")[1];
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
+            } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
+                String filename = path.split("/")[2];
+                String filePathStr  = "/tmp/" + filename;
+                Path filePath = Paths.get(filePathStr);
+
+                if(Files.exists(filePath)){
+                FileInputStream fileInputStream = new FileInputStream(filePathStr);
+                reader = new BufferedReader(new InputStreamReader(fileInputStream));
+                String fileText = reader.readLine();
+                writer.write("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + fileText.length() + "\r\n\r\n" + fileText);
+                } else {
+                writer.write("HTTP/1.1 404 Not Found\r\n\r\n");
+                }
             } else {
                 writer.write("HTTP/1.1 404 Not Found\r\n\r\n");
             }
