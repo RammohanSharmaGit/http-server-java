@@ -39,11 +39,11 @@ public class ClientServer implements Runnable{
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = path.split("/")[2];
-                String filePathStr  = "/tmp/" + filename;
-                Path filePath = Paths.get(filename);
+                String filePathStr  = "/" + filename;
+                Path filePath = Paths.get(filePathStr);
 
                 if(Files.exists(filePath)){
-                FileInputStream fileInputStream = new FileInputStream(filename);
+                FileInputStream fileInputStream = new FileInputStream(filePathStr);
                 reader = new BufferedReader(new InputStreamReader(fileInputStream));
                 String fileText = reader.readLine();
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + fileText.length() + "\r\n\r\n" + fileText);
