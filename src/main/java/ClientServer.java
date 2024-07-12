@@ -47,8 +47,6 @@ public class ClientServer implements Runnable{
                 System.out.println(filePath);
                 System.out.println(Files.exists(filePath));
                 if(Files.exists(filePath)){
-                FileInputStream fileInputStream = new FileInputStream();
-                reader = new BufferedReader(new InputStreamReader(fileInputStream));
                 String fileText = Files.readString(filePath);
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + fileText.length() + "\r\n\r\n" + fileText);
                 } else {
