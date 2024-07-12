@@ -42,6 +42,7 @@ public class ClientServer implements Runnable{
             } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = path.split("/")[2];
                 String filePathStr  = "/tmp/data/codecrafters.io/http-server-tester/" + filename;
+                System.out.println(filePathStr);
                 Path filePath = Paths.get(filePathStr);
                 System.out.println(filePath);
                 System.out.println(Files.exists(filePath));
