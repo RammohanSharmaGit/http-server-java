@@ -4,6 +4,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClientServer implements Runnable{
@@ -29,6 +30,7 @@ public class ClientServer implements Runnable{
             String line = request.get(0);
             String path = line.split(" ")[1];
             String[] paths = path.split("/");
+            System.out.println(Arrays.toString(paths));
             if (path != null && path.equalsIgnoreCase("/"))
                 writer.write("HTTP/1.1 200 OK\r\n\r\n");
             else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("echo")) {
@@ -39,9 +41,10 @@ public class ClientServer implements Runnable{
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = path.split("/")[2];
-                String filePathStr  = "/" + filename;
+                String filePathStr  = "./" + filename;
                 Path filePath = Paths.get(filePathStr);
-
+                System.out.println(filePath);
+                System.out.println(Files.exists(filePath));
                 if(Files.exists(filePath)){
                 FileInputStream fileInputStream = new FileInputStream(filePathStr);
                 reader = new BufferedReader(new InputStreamReader(fileInputStream));
