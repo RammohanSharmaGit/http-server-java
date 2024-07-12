@@ -41,7 +41,7 @@ public class ClientServer implements Runnable{
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = path.split("/")[2];
-                String filePathStr  = "" + filename;
+                String filePathStr  = "/tmp/" + filename;
                 System.out.println(filePathStr);
                 Path filePath = Paths.get(filePathStr);
                 System.out.println(filePath);
