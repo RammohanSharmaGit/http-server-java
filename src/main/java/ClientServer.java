@@ -43,7 +43,7 @@ public class ClientServer implements Runnable{
                 String filename = path.split("/")[2];
                 String filePathStr  = "/tmp/" + filename;
                 System.out.println(filePathStr);
-                Path filePath = Paths.get("/tmp/",filename);
+                Path filePath = Paths.get("/tmp/data/codecrafters.io/http-server-tester/",filename);
                 System.out.println(filePath);
                 System.out.println(Files.exists(filePath));
                 if(Files.exists(filePath)){
