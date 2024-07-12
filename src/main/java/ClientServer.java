@@ -43,13 +43,13 @@ public class ClientServer implements Runnable{
                 String filename = path.split("/")[2];
                 String filePathStr  = "/tmp/" + filename;
                 System.out.println(filePathStr);
-                Path filePath = Paths.get("tmp",filename);
+                Path filePath = Paths.get("/tmp/",filename);
                 System.out.println(filePath);
                 System.out.println(Files.exists(filePath));
                 if(Files.exists(filePath)){
-                FileInputStream fileInputStream = new FileInputStream(filePath);
+                FileInputStream fileInputStream = new FileInputStream();
                 reader = new BufferedReader(new InputStreamReader(fileInputStream));
-                String fileText = reader.readLine();
+                String fileText = Files.readString(filePath);
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + fileText.length() + "\r\n\r\n" + fileText);
                 } else {
                 writer.write("HTTP/1.1 404 Not Found\r\n\r\n");
