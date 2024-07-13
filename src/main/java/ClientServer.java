@@ -11,8 +11,11 @@ public class ClientServer implements Runnable{
 
     Socket clientSocket = null;
 
-    public ClientServer(Socket clientSocket) {
+    String directory = "";
+
+    public ClientServer(Socket clientSocket, String directory) {
         this.clientSocket = clientSocket;
+        this.directory = directory;
     }
 
     @Override
@@ -41,9 +44,9 @@ public class ClientServer implements Runnable{
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (paths.length > 2 && path.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = path.split("/")[2];
-                String filePathStr  = "/tmp/" + filename;
+                String filePathStr  = directory + filename;
                 System.out.println(filePathStr);
-                Path filePath = Paths.get("/tmp/data/codecrafters.io/http-server-tester/",filename);
+                Path filePath = Paths.get("/tmp/",filename);
                 System.out.println(filePath);
                 System.out.println(Files.exists(filePath));
                 if(Files.exists(filePath)){
