@@ -27,9 +27,10 @@ public class ClientServer implements Runnable{
 
             List<String> request = new ArrayList<>();
             String buffer;
-            while ((buffer = reader.readLine()) != null && !buffer.isEmpty())
+            while (!(buffer = reader.readLine()).isEmpty())
                 request.add(new String(buffer));
             System.out.println(request);
+
             String line = request.get(0);
             String httpMethod = line.split(" ")[0];
             String resourcePath = line.split(" ")[1];
@@ -55,7 +56,7 @@ public class ClientServer implements Runnable{
             } else if (httpMethod.equalsIgnoreCase("post") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
-                String fileText = request.get(4);
+                String fileText = request.get(3);
                 Files.createFile(filePath);
                 Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
