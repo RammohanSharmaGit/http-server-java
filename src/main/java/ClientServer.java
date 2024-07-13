@@ -43,7 +43,7 @@ public class ClientServer implements Runnable{
             } else if (paths.length > 1 && resourcePath.split("/")[1].equalsIgnoreCase("user-agent")) {
                 String res = request.get(2).split("/r/n")[0].split(" ")[1];
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
-            } else if (paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
+            } else if (httpMethod.equalsIgnoreCase("get") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
                 if(Files.exists(filePath)){
@@ -55,7 +55,7 @@ public class ClientServer implements Runnable{
             } else if (httpMethod.equalsIgnoreCase("post") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
-                String fileText = request.get(6);
+                String fileText = request.get(5);
                 Files.createFile(filePath);
                 Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
