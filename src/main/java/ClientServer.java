@@ -55,7 +55,7 @@ public class ClientServer implements Runnable{
             } else if (httpMethod.equalsIgnoreCase("post") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
-                String fileText = request.get(5);
+                String fileText = request.get(4);
                 Files.createFile(filePath);
                 Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
