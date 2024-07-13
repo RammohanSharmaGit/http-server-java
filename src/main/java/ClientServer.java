@@ -59,7 +59,7 @@ public class ClientServer implements Runnable{
                 String fileText = reader.readLine();
                 System.out.println(fileText);
                 Files.createFile(filePath);
-                Files.writeString(filePath,fileText);
+                Files.write(filePath,fileText.getBytes());
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
             } else {
