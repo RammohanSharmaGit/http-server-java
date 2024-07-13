@@ -17,7 +17,7 @@ public class Main {
        while(true) {
 
            clientSocket = serverSocket.accept(); // Wait for connection from client.
-           new Thread(new ClientServer(clientSocket,directory)).run();
+           new Thread(new ClientServer(clientSocket,directory)).start();
        }
 
      } catch (IOException e) {
