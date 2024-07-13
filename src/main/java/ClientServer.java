@@ -60,9 +60,7 @@ public class ClientServer implements Runnable{
                 String fileText = "";
                 int val;
                 while((val = reader.read())!=-1) {
-                 System.out.println((char)val);
                     fileText += (char) val;
-                    System.out.println(fileText);
                 }
                 System.out.println(fileText);
                 Files.createFile(filePath);
