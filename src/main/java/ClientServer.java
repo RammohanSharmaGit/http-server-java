@@ -62,8 +62,8 @@ public class ClientServer implements Runnable{
                 while((val = reader.read())!=-1)
                     fileText += (char)val;
                 System.out.println(fileText);
-                Files.createFile(filePath);
-                Files.writeString(filePath,"");
+
+                Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
             } else {
