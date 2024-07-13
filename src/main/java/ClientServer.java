@@ -58,8 +58,8 @@ public class ClientServer implements Runnable{
                 Path filePath = Paths.get(directory,filename);
                 String fileText = reader.readLine();
                 System.out.println(fileText);
-                Files.createFile(filePath);
-                Files.write(filePath,fileText.getBytes());
+               // Files.createFile(filePath);
+                Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
             } else {
