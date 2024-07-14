@@ -44,7 +44,7 @@ public class ClientServer implements Runnable{
                 String res = resourcePath.split("/")[2];
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (paths.length > 1 && resourcePath.split("/")[1].equalsIgnoreCase("user-agent")) {
-                String res = headers.get("user-agent");
+                String res = headers.get("User-Agent");
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (httpMethod.equalsIgnoreCase("get") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
@@ -67,6 +67,12 @@ public class ClientServer implements Runnable{
                 Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
+            } else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo") && headers.containsKey("Accept-Encoding")) {
+                String encoding = headers.get("Accept-Encoding");
+                if(encoding.equalsIgnoreCase("gzip"))
+                writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nAccept-Encoding: gzip \r\n\r\n");
+                else
+                writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
             } else {
                 writer.write("HTTP/1.1 404 Not Found\r\n\r\n");
             }
