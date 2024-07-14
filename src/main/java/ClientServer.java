@@ -4,6 +4,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClientServer implements Runnable{
 
@@ -43,6 +44,7 @@ public class ClientServer implements Runnable{
             else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo") && headers.containsKey("Accept-Encoding")) {
                 String encoding = headers.get("Accept-Encoding");
                 Set<String> encodings = new HashSet<>(Arrays.asList(encoding.split(",")));
+                encodings = encodings.stream().map(String::trim).collect(Collectors.toSet());
                 System.out.println(encodings);
                 if(encodings.contains("gzip"))
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
