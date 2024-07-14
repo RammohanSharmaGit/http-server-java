@@ -3,9 +3,7 @@ import java.net.Socket;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ClientServer implements Runnable{
 
@@ -25,24 +23,28 @@ public class ClientServer implements Runnable{
             System.out.println("accepted new connection");
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            List<String> request = new ArrayList<>();
-            String buffer;
-            while ((buffer = reader.readLine()) != null && !buffer.isEmpty())
-                request.add(new String(buffer));
-            System.out.println(request);
-
-            String line = request.get(0);
-            String httpMethod = line.split(" ")[0];
-            String resourcePath = line.split(" ")[1];
+            String requestLine = reader.readLine();
+            String httpMethod = requestLine.split(" ")[0];
+            String resourcePath = requestLine.split(" ")[1];
             String[] paths = resourcePath.split("/");
             System.out.println(Arrays.toString(paths));
+
+
+            Map<String,String> headers = new HashMap<>();
+            String buffer;
+            while ((buffer = reader.readLine()) != null && !buffer.isEmpty()) {
+                headers.put(buffer.split(":")[0].trim(),buffer.split(":")[1].trim());
+            }
+            System.out.println(headers);
+
+
             if (resourcePath != null && resourcePath.equalsIgnoreCase("/"))
                 writer.write("HTTP/1.1 200 OK\r\n\r\n");
             else if (paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("echo")) {
                 String res = resourcePath.split("/")[2];
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (paths.length > 1 && resourcePath.split("/")[1].equalsIgnoreCase("user-agent")) {
-                String res = request.get(2).split("/r/n")[0].split(" ")[1];
+                String res = headers.get("user-agent");
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
             } else if (httpMethod.equalsIgnoreCase("get") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
