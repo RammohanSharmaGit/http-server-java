@@ -50,13 +50,13 @@ public class ClientServer implements Runnable{
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
                 else
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
-            } else if (paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("echo")) {
+            } else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo")) {
                 String res = resourcePath.split("/")[2];
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
-            } else if (paths.length > 1 && resourcePath.split("/")[1].equalsIgnoreCase("user-agent")) {
+            } else if (paths.length > 1 && paths[1].equalsIgnoreCase("user-agent")) {
                 String res = headers.get("User-Agent");
                 writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + res.length() + "\r\n\r\n" + res);
-            } else if (httpMethod.equalsIgnoreCase("get") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
+            } else if (httpMethod.equalsIgnoreCase("get") && paths.length > 2 && paths[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
                 if(Files.exists(filePath)){
@@ -65,7 +65,7 @@ public class ClientServer implements Runnable{
                 } else {
                 writer.write("HTTP/1.1 404 Not Found\r\n\r\n");
                 }
-            } else if (httpMethod.equalsIgnoreCase("post") && paths.length > 2 && resourcePath.split("/")[1].equalsIgnoreCase("files")) {
+            } else if (httpMethod.equalsIgnoreCase("post") && paths.length > 2 && paths[1].equalsIgnoreCase("files")) {
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
 
