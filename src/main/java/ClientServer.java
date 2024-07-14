@@ -42,7 +42,8 @@ public class ClientServer implements Runnable{
                 writer.write("HTTP/1.1 200 OK\r\n\r\n");
             else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo") && headers.containsKey("Accept-Encoding")) {
                 String encoding = headers.get("Accept-Encoding");
-                if(encoding.equalsIgnoreCase("gzip"))
+                Set<String> encodings = new HashSet<>(Arrays.asList(encoding.split(",")));
+                if(encodings.contains("gzip"))
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
                 else
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
