@@ -26,7 +26,7 @@ public class ClientServer implements Runnable{
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             List<String> request = new ArrayList<>();
-            String buffer;
+
             while ( reader.ready())
                 request.add(reader.readLine());
             System.out.println(request);
@@ -58,10 +58,6 @@ public class ClientServer implements Runnable{
                 Path filePath = Paths.get(directory,filename);
 
                 String fileText = request.get(5);
-                int val;
-                while((val = reader.read())!=-1) {
-                    val =  (char) val;
-                }
                 System.out.println(fileText);
 
                 Files.writeString(filePath,fileText);
