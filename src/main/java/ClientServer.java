@@ -26,9 +26,9 @@ public class ClientServer implements Runnable{
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             List<String> request = new ArrayList<>();
-
-            while ( reader.ready())
-                request.add(reader.readLine());
+            String buffer;
+            while ((buffer = reader.readLine()) != null && !buffer.isEmpty())
+                request.add(new String(buffer));
             System.out.println(request);
 
             String line = request.get(0);
@@ -57,11 +57,12 @@ public class ClientServer implements Runnable{
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
 
-                String fileText = request.get(5);
+                String fileText = "";
+                while(reader.ready()) {
+                    fileText += (char)reader.read();
+                }
                 System.out.println(fileText);
-
-              //  Files.writeString(filePath,fileText);
-
+                Files.writeString(filePath,fileText);
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
             } else {
