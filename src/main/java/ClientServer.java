@@ -27,8 +27,8 @@ public class ClientServer implements Runnable{
 
             List<String> request = new ArrayList<>();
             String buffer;
-            while ((buffer = reader.readLine()) != null && !buffer.isEmpty())
-                request.add(new String(buffer));
+            while ( reader.ready())
+                request.add(reader.readLine());
             System.out.println(request);
 
             String line = request.get(0);
@@ -57,12 +57,14 @@ public class ClientServer implements Runnable{
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
 
-                String fileText = "";
+                String fileText = request.get(5);
                 int val;
                 while((val = reader.read())!=-1) {
-                    fileText += (char) val;
+                    val =  (char) val;
                 }
                 System.out.println(fileText);
+
+                Files.writeString(filePath,fileText);
 
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
