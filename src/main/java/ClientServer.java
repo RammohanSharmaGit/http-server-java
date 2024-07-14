@@ -60,7 +60,7 @@ public class ClientServer implements Runnable{
                 String fileText = request.get(5);
                 System.out.println(fileText);
 
-                Files.writeString(filePath,fileText);
+              //  Files.writeString(filePath,fileText);
 
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
