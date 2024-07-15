@@ -48,10 +48,6 @@ public class ClientServer implements Runnable{
                 encodings = encodings.stream().map(String::trim).collect(Collectors.toSet());
                 System.out.println(encodings);
                 String text = paths[2];
-//                StringBuilder fileText = new StringBuilder();
-//                while(reader.ready()) {
-//                    fileText.append((char)reader.read());
-//                }
                 if(encodings.contains("gzip") ) {
                     ByteArrayOutputStream os = new ByteArrayOutputStream(text.length());
                     GZIPOutputStream gzipOutputStream = new GZIPOutputStream(os);
@@ -59,18 +55,11 @@ public class ClientServer implements Runnable{
                     gzipOutputStream.close();
                     byte [] compressed = os.toByteArray();
                     os.close();
-                    System.out.println(Arrays.toString(compressed));
-                    System.out.println(compressed);
-                    StringBuilder sb = new StringBuilder();
-                    for (byte b : compressed)
-                        sb.append(String.format("%02X ",b));
+
                     String httpResponse = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\nContent-Length: "+ compressed.length  + "\r\n\r\n";
                     clientSocket.getOutputStream().write(httpResponse.getBytes());
                     clientSocket.getOutputStream().write(compressed);
                     clientSocket.getOutputStream().flush();
-              //  }
-              //  else if (encodings.contains("gzip")){
-              //      writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
                 } else
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
             } else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo")) {
