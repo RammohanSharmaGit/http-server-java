@@ -55,12 +55,13 @@ public class ClientServer implements Runnable{
                 if(encodings.contains("gzip") ) {
                     ByteArrayOutputStream os = new ByteArrayOutputStream(text.length());
                     GZIPOutputStream gzipOutputStream = new GZIPOutputStream(os);
-                    gzipOutputStream.write(text.toString().getBytes(StandardCharsets.UTF_8));
+                    gzipOutputStream.write(text.getBytes(StandardCharsets.UTF_8));
                     gzipOutputStream.close();
                     byte [] compressed = os.toByteArray();
                     os.close();
+                    System.out.println(Arrays.toString(compressed));
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\nContent-Length: "+ compressed.length  + "\r\n\r\n"
-                    + compressed);
+                    + Arrays.toString(compressed));
               //  }
               //  else if (encodings.contains("gzip")){
               //      writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
