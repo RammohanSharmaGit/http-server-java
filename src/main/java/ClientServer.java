@@ -61,7 +61,7 @@ public class ClientServer implements Runnable{
                     os.close();
                     StringBuilder sb = new StringBuilder();
                     for (byte b : compressed) {
-                        sb.append(String.format("%02X",b));
+                        sb.append(String.format("%02X ",b));
                     }
                     String compressedString = sb.toString();
                     System.out.println(compressedString);
