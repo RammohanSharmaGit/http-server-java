@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPOutputStream;
 
 public class ClientServer implements Runnable{
 
@@ -46,9 +47,23 @@ public class ClientServer implements Runnable{
                 Set<String> encodings = new HashSet<>(Arrays.asList(encoding.split(",")));
                 encodings = encodings.stream().map(String::trim).collect(Collectors.toSet());
                 System.out.println(encodings);
-                if(encodings.contains("gzip"))
+                String text = paths[2];
+                StringBuilder fileText = new StringBuilder();
+                while(reader.ready()) {
+                    fileText.append((char)reader.read());
+                }
+                if(encodings.contains("gzip") && !fileText.isEmpty()) {
+                    ByteArrayOutputStream os = new ByteArrayOutputStream(fileText.length());
+                    GZIPOutputStream gzipOutputStream = new GZIPOutputStream(os);
+                    gzipOutputStream.write(fileText.toString().getBytes(StandardCharsets.UTF_8));
+                    gzipOutputStream.close();
+                    byte [] compressed = os.toByteArray();
+                    os.close();
+                    writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n"
+                    + Base64.getEncoder().encodeToString(compressed));
+                } else if (encodings.contains("gzip")){
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
-                else
+                } else
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
             } else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo")) {
                 String res = resourcePath.split("/")[2];
@@ -69,12 +84,12 @@ public class ClientServer implements Runnable{
                 String filename = resourcePath.split("/")[2];
                 Path filePath = Paths.get(directory,filename);
 
-                String fileText = "";
+                StringBuilder fileText = new StringBuilder();
                 while(reader.ready()) {
-                    fileText += (char)reader.read();
+                    fileText.append((char)reader.read());
                 }
                 System.out.println(fileText);
-                Files.writeString(filePath,fileText);
+                Files.writeString(filePath,fileText.toString());
                 writer.write("HTTP/1.1 201 Created\r\n\r\n");
 
             } else {
