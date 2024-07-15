@@ -48,22 +48,23 @@ public class ClientServer implements Runnable{
                 encodings = encodings.stream().map(String::trim).collect(Collectors.toSet());
                 System.out.println(encodings);
                 String text = paths[2];
-                StringBuilder fileText = new StringBuilder();
-                while(reader.ready()) {
-                    fileText.append((char)reader.read());
-                }
-                if(encodings.contains("gzip") && !fileText.isEmpty()) {
-                    ByteArrayOutputStream os = new ByteArrayOutputStream(fileText.length());
+//                StringBuilder fileText = new StringBuilder();
+//                while(reader.ready()) {
+//                    fileText.append((char)reader.read());
+//                }
+                if(encodings.contains("gzip") ) {
+                    ByteArrayOutputStream os = new ByteArrayOutputStream(text.length());
                     GZIPOutputStream gzipOutputStream = new GZIPOutputStream(os);
-                    gzipOutputStream.write(fileText.toString().getBytes(StandardCharsets.UTF_8));
+                    gzipOutputStream.write(text.toString().getBytes(StandardCharsets.UTF_8));
                     gzipOutputStream.close();
                     byte [] compressed = os.toByteArray();
                     os.close();
                     System.out.println(Base64.getEncoder().encodeToString(compressed));
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n Content-Length : "+ compressed.length  + "\r\n\r\n"
                     + Base64.getEncoder().encodeToString(compressed));
-                } else if (encodings.contains("gzip")){
-                    writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
+              //  }
+              //  else if (encodings.contains("gzip")){
+              //      writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
                 } else
                     writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
             } else if (paths.length > 2 && paths[1].equalsIgnoreCase("echo")) {
