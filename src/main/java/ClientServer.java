@@ -64,9 +64,10 @@ public class ClientServer implements Runnable{
                     StringBuilder sb = new StringBuilder();
                     for (byte b : compressed)
                         sb.append(String.format("%02X ",b));
-
-                    writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\nContent-Length: "+ compressed.length  + "\r\n\r\n");
+                    String httpResponse = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\nContent-Length: "+ compressed.length  + "\r\n\r\n";
+                    clientSocket.getOutputStream().write(httpResponse.getBytes());
                     clientSocket.getOutputStream().write(compressed);
+                    clientSocket.getOutputStream().flush();
               //  }
               //  else if (encodings.contains("gzip")){
               //      writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n\r\n");
