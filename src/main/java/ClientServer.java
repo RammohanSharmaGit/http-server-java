@@ -60,7 +60,7 @@ public class ClientServer implements Runnable{
                     byte [] compressed = os.toByteArray();
                     os.close();
                     System.out.println(Base64.getEncoder().encodeToString(compressed));
-                    writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n Content-Length : "+ compressed.length  + "\r\n\r\n"
+                    writer.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip \r\n Content-Length: "+ compressed.length  + "\r\n\r\n"
                     + Base64.getEncoder().encodeToString(compressed));
               //  }
               //  else if (encodings.contains("gzip")){
